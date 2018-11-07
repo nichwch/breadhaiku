@@ -9,7 +9,7 @@ function Title(props) {
           </div>
   )
 
-};
+}
 
 function Buttons(props){
   //if app is in browse mode, show the write button
@@ -17,13 +17,11 @@ function Buttons(props){
   {
     return(
       <span>
-      <p>
+      <p className = "inline">
         browse
       </p>
       <button onClick = {props.switch}>
-      <p>
         //write
-      </p>
       </button>
       </span>
     )
@@ -33,15 +31,66 @@ function Buttons(props){
     return(
       <span>
       <button onClick = {props.switch}>
-      <p>
         browse
-      </p>
       </button>
-      <p>
+      <p className = "inline">
         //write
       </p>
       </span>
     )
+  }
+}
+
+class InputField extends Component {
+  constructor()
+  {
+    super();
+    this.state = {
+      writtenpoem:{
+        line1:"",
+        line2:"",
+        line3:"",
+        author:"",
+      }
+    }
+
+  }
+
+  render() {
+    if(this.props.writing == false)
+    {
+      return null;
+    }
+    else if (this.props.writing == true){
+      return (
+      <div>
+      <form>
+        <input
+        onChange={this.handleChange1}
+        value={this.state.message}
+        placeholder="line 1"
+        type="text" />
+        <input
+        onChange={this.handleChange2}
+        value={this.state.message}
+        placeholder="line 2"
+        type="text" />
+        <input
+        onChange={this.handleChange3}
+        value={this.state.message}
+        placeholder="line 3"
+        type="text" />
+        <input
+        onChange={this.handleChange4}
+        value={this.state.message}
+        placeholder="your name"
+        type="text" />
+      </form>
+      <button>
+        submit
+      </button>
+      </div>)
+    }
   }
 }
 
@@ -51,7 +100,28 @@ class App extends Component {
     super();
     this.switchMode = this.switchMode.bind(this);
     this.state = {
-      writing:false,
+      writing:true,
+      poemlist:[
+        {
+          line1:"bread",
+          line2:"is",
+          line3:"good",
+          author:"nick",
+        },
+        {
+          line1:"bread",
+          line2:"is",
+          line3:"good",
+          author:"nick",
+        },
+        {
+          line1:"bread",
+          line2:"is",
+          line3:"good",
+          author:"nick",
+        },
+
+      ]
     };
   }
   render() {
@@ -60,6 +130,7 @@ class App extends Component {
         <Title writing={this.state.writing}
                switch = {this.switchMode}
         />
+        <InputField writing={this.state.writing} />
       </div>
     );
   }
@@ -72,8 +143,8 @@ class App extends Component {
     else {
       this.setState({writing:false});
     }
-
   }
+
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));

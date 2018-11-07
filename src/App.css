@@ -3,8 +3,32 @@
   font-family: sans-serif;
 }
 
-button {
+.inline{
+  display: inline;
+}
+
+p, button {
   border: none;
   font-weight:bold;
-  display: inline;
+  font-size: 10px;
+}
+
+button{
+  margin: 0px;
+  padding:0px;
+}
+
+button:hover{
+  color: #737373;
+}
+
+input {
+  width: 40%;
+  margin-left: 30%;
+  margin-right:30%;
+  display:block;
+  text-align: center;
+  border-top: none;
+  border-left: none;
+  border-right: none;
 }
