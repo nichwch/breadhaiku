@@ -4,6 +4,24 @@ import dragon from './dragon.png';
 import warrior from './breadwarrior.png';
 import './App.css';
 
+function verifyHaiku(haiku)
+{
+  let syllable = require('syllable')
+  let syllable1 = (syllable(haiku.line1)==5);
+  let syllable2 = (syllable(haiku.line2)==7);
+  let syllable3 = (syllable(haiku.line3)==5);
+
+  let bread1 = haiku.line1.includes("bread");
+  let bread2 = haiku.line2.includes("bread");
+  let bread3 = haiku.line3.includes("bread");
+
+  if(bread1&&bread2&&bread3&&syllable1&&syllable2&&syllable3)
+  {
+    return true;
+  }
+  return false;
+}
+
 function Title(props) {
   return (<div>
             <h1>breadhaiku</h1>
@@ -48,6 +66,10 @@ class InputField extends Component {
   {
     super();
     this.state = {
+      input1:"",
+      input2:"",
+      input3:"",
+      input4:"",
       writtenpoem:{
         line1:"a",
         line2:"a",
@@ -68,23 +90,35 @@ class InputField extends Component {
       return null;
     }
     else if (this.props.writing == true){
+      let errorMessage = "";
+      if(this.props.input1==""&&this.props.input2==""&&this.props.input3==""&&this.props.input4=="")
+      {
+        errorMessage = "";
+        this.setState({validHaiku:true});
+      }
+      else if(this.state.validHaiku == false)
+      {
+        errorMessage = "error";
+      }
+      if(this.props.haikuSub==false)
+      {
       return (
       <div>
       <form>
         <input
         onChange={this.handleChange1}
         value={this.state.message}
-        placeholder="line 1"
+        placeholder="line 1 (5 syllables)"
         type="text" />
         <input
         onChange={this.handleChange2}
         value={this.state.message}
-        placeholder="line 2"
+        placeholder="line 2 (7 syllables)"
         type="text" />
         <input
         onChange={this.handleChange3}
         value={this.state.message}
-        placeholder="line 3"
+        placeholder="line 3 (5 syllables)"
         type="text" />
         <input
         onChange={this.handleChange4}
@@ -95,7 +129,12 @@ class InputField extends Component {
       <button onClick = {this.submitChange}>
         submit
       </button>
+      <p className = "error">{errorMessage}</p>
       </div>)
+    }
+    else{
+      return (<ThankYou/>);
+    }
     }
   }
 
@@ -112,27 +151,39 @@ class InputField extends Component {
     this.setState({input4: event.target.value});
   }
   submitChange(){
-    this.props.submit({
+    if(verifyHaiku({
       line1: this.state.input1,
       line2: this.state.input2,
       line3: this.state.input3,
       author: this.state.input4,
-    })
+    }))
+    {
+      this.props.submit({
+        line1: this.state.input1,
+        line2: this.state.input2,
+        line3: this.state.input3,
+        author: this.state.input4,
+      })
+      }
+      else{
+        this.setState({validHaiku:false});
+      }
+    }
   }
-}
+  function ThankYou(props) {
+    return(
+      <div>
+        <p>Let's get this bread! Your poem has been submitted.</p>
+      </div>
+    )
+  }
+
 
   function Feed(props) {
     if(props.writing == false)
     {
-      let poems = props.poemList.map(poem => {
-        return (
-          <li key={poem.line1}>
-            <p>{poem.line1}</p>
-            <p>{poem.line2}</p>
-            <p>{poem.line3}</p>
-            <p>Written by {poem.author}</p>
-          </li>
-        )
+      let poems = props.poemList.map(currentpoem => {
+        return <Poem poem = {currentpoem} />
       })
       return (<ul>
         {poems}
@@ -141,32 +192,55 @@ class InputField extends Component {
     return null;
   }
 
+  function Poem(props) {
+    return (
+      <div className = "poemBlock">
+      <li key={props.poem.line1}>
+        <p>{props.poem.line1}</p>
+        <p>{props.poem.line2}</p>
+        <p>{props.poem.line3}</p>
+        <p className = "authorSign">Written by {props.poem.author}</p>
+      </li>
+      </div>
+
+    )
+  }
+
 class App extends Component {
+  componentDidMount() {
+    fetch("localhost:5000/haikus").then(results => {
+      this.setState({poemList:results});
+    })
+  }
+
   constructor()
   {
     super();
     this.switchMode = this.switchMode.bind(this);
     this.state = {
       writing:true,
+      haikuSubmitted:false,
       poemList:[
+        /*
         {
-          line1:"bread",
-          line2:"is",
-          line3:"good",
+          line1:"i like to eat bread",
+          line2:"bread is very good and nice",
+          line3:"i am happy boy",
           author:"nick",
         },
         {
-          line1:"bread",
-          line2:"is",
-          line3:"good",
+          line1:"let us get this bread",
+          line2:"we will accomplish our goals",
+          line3:"to the moon with us",
           author:"nick",
         },
         {
-          line1:"bread",
-          line2:"is",
-          line3:"good",
+          line1:"bread bread bread bread bread",
+          line2:"bread bread bread bread bread bread bread",
+          line3:"bread bread bread bread bread",
           author:"nick",
         },
+        */
       ]
     };
 
@@ -179,22 +253,25 @@ class App extends Component {
                switch = {this.switchMode}
         />
         <InputField writing={this.state.writing}
-                    submit = {this.submitHaiku}/>
+                    submit = {this.submitHaiku}
+                    haikuSub = {this.state.haikuSubmitted}/>
         <Feed writing={this.state.writing}
               poemList = {this.state.poemList}/>
       </div>
     );
   }
   submitHaiku(newHaiku) {
-    console.log(this.state.poemList);
-    let newPoemList = this.state.poemList.concat(newHaiku);
+    newHaiku = [newHaiku];
+    let newPoemList = newHaiku.concat(this.state.poemList);
     this.setState({poemList: newPoemList})
+    this.setState({haikuSubmitted:true});
   }
 
   switchMode() {
     if(this.state.writing == false)
     {
       this.setState({writing:true});
+      this.setState({haikuSubmitted:false});
     }
     else {
       this.setState({writing:false});
@@ -202,5 +279,6 @@ class App extends Component {
   }
 
 }
+
 
 ReactDOM.render(<App />, document.getElementById('root'));

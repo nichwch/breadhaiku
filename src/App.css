@@ -3,14 +3,31 @@
   font-family: sans-serif;
 }
 
+.poemBlock {
+  width: 50%;
+  margin-left:25%;
+  margin-right:25%;
+  margin-bottom:5%;
+}
+
 .inline{
   display: inline;
+}
+
+.authorSign{
+  color: #737373;
+  padding-top:3px;
+}
+
+.error{
+  color: red;
 }
 
 p, button {
   border: none;
   font-weight:bold;
   font-size: 10px;
+  margin: 1px;
 }
 
 button{
@@ -22,6 +39,12 @@ button:hover{
   color: #737373;
 }
 
+ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+
 input {
   width: 40%;
   margin-left: 30%;
@@ -31,4 +54,5 @@ input {
   border-top: none;
   border-left: none;
   border-right: none;
+  margin-top:10px;
 }
