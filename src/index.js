@@ -113,9 +113,14 @@ class InputField extends Component {
         errorMessage = (<div className = "error">
                           <br></br>
                           <p>{errorParameters.bread ? "":"Your poem does not mention bread..."}</p>
+                          {errorParameters.line1==5&&errorParameters.line2==7&&errorParameters.line3==5 ?
+                          "":
+                          <div>
                           <p>Your first line has {errorParameters.line1} syllables.</p>
                           <p>Your second line has {errorParameters.line2} syllables.</p>
                           <p>Your third line has {errorParameters.line3} syllables.</p>
+                          </div>
+                          }
                           <br></br>
                           <p>Your poem must contain the word bread, and follow the form of a haiku.
                           The first and last lines of a Haiku have 5 syllables and the middle line has 7 syllables.</p>
