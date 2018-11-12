@@ -15,9 +15,13 @@ function verifyHaiku(haiku)
   let bread1 = haiku.line1.includes("bread");
   let bread2 = haiku.line2.includes("bread");
   let bread3 = haiku.line3.includes("bread");
+
+  let max1 = haiku.line1.length < 300;
+  let max2 = haiku.line2.length < 300;
+  let max3 = haiku.line3.length < 300;
   let containsBread = (haiku.line1.includes("bread")||haiku.line2.includes("bread")||haiku.line3.includes("bread"));
 
-  if((bread1||bread2||bread3)&&syllable1&&syllable2&&syllable3)
+  if((bread1||bread2||bread3)&&syllable1&&syllable2&&syllable3&&max1&&max2&&max3)
   {
     return {success: true,
             bread: containsBread,
