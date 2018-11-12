@@ -15,18 +15,21 @@ function verifyHaiku(haiku)
   let bread1 = haiku.line1.includes("bread");
   let bread2 = haiku.line2.includes("bread");
   let bread3 = haiku.line3.includes("bread");
+  let containsBread = (haiku.line1.includes("bread")||haiku.line2.includes("bread")||haiku.line3.includes("bread"));
 
-  if(bread1&&bread2&&bread3&&syllable1&&syllable2&&syllable3)
+  if((bread1||bread2||bread3)&&syllable1&&syllable2&&syllable3)
   {
     return {success: true,
+            bread: containsBread,
             line1:syllable(haiku.line1),
-            line2:syllable(haiku.line1),
-            line3:syllable(haiku.line1)};
+            line2:syllable(haiku.line2),
+            line3:syllable(haiku.line3)};
   }
   return {success: false,
+          bread: containsBread,
           line1:syllable(haiku.line1),
-          line2:syllable(haiku.line1),
-          line3:syllable(haiku.line1)};
+          line2:syllable(haiku.line2),
+          line3:syllable(haiku.line3)};
 }
 
 function Title(props) {
@@ -109,6 +112,7 @@ class InputField extends Component {
         });
         errorMessage = (<div className = "error">
                           <br></br>
+                          <p>{errorParameters.bread ? "":"Your poem does not mention bread..."}</p>
                           <p>Your first line has {errorParameters.line1} syllables.</p>
                           <p>Your second line has {errorParameters.line2} syllables.</p>
                           <p>Your third line has {errorParameters.line3} syllables.</p>
@@ -161,15 +165,19 @@ class InputField extends Component {
 
   handleChange1(event){
     this.setState({input1: event.target.value});
+    this.props.resetErr();
   }
   handleChange2(event){
     this.setState({input2: event.target.value});
+    this.props.resetErr();
   }
   handleChange3(event){
     this.setState({input3: event.target.value});
+    this.props.resetErr();
   }
   handleChange4(event){
     this.setState({input4: event.target.value});
+    this.props.resetErr();
   }
   submitChange(){
     if(verifyHaiku({
@@ -275,6 +283,7 @@ class App extends Component {
 
     this.submitHaiku = this.submitHaiku.bind(this);
     this.setError = this.setError.bind(this);
+    this.resetError = this.resetError.bind(this);
   }
   render() {
     return (
@@ -302,6 +311,10 @@ class App extends Component {
 
   setError(){
     this.setState({error:true});
+  }
+
+  resetError(){
+    this.setState({error:false});
   }
 
 
