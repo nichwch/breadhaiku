@@ -4,6 +4,7 @@ import dragon from './dragon.png';
 import warrior from './breadwarrior.png';
 import './App.css';
 
+//verify that submitted poem fits profile of a haiku, and includes a word related to bread
 function verifyHaiku(haiku)
 {
   let syllable = require('syllable')
@@ -17,15 +18,22 @@ function verifyHaiku(haiku)
 
   if(bread1&&bread2&&bread3&&syllable1&&syllable2&&syllable3)
   {
-    return true;
+    return {success: true,
+            line1:syllable(haiku.line1),
+            line2:syllable(haiku.line1),
+            line3:syllable(haiku.line1)};
   }
-  return false;
+  return {success: false,
+          line1:syllable(haiku.line1),
+          line2:syllable(haiku.line1),
+          line3:syllable(haiku.line1)};
 }
 
 function Title(props) {
   return (<div>
             <h1>breadhaiku</h1>
-            <span><Buttons writing = {props.writing} switch = {props.switch}/></span>
+            <span><Buttons writing = {props.writing}
+                           switch = {props.switch}/></span>
           </div>
   )
 
@@ -91,14 +99,27 @@ class InputField extends Component {
     }
     else if (this.props.writing == true){
       let errorMessage = "";
-      if(this.props.input1==""&&this.props.input2==""&&this.props.input3==""&&this.props.input4=="")
+      if(this.props.validHaiku == false)
       {
-        errorMessage = "";
-        this.setState({validHaiku:true});
-      }
-      else if(this.state.validHaiku == false)
-      {
-        errorMessage = "error";
+        let errorParameters = verifyHaiku({
+          line1: this.state.input1,
+          line2: this.state.input2,
+          line3: this.state.input3,
+          author: this.state.input4,
+        });
+        errorMessage = (<div className = "error">
+                          <br></br>
+                          <p>Your first line has {errorParameters.line1} syllables.</p>
+                          <p>Your second line has {errorParameters.line2} syllables.</p>
+                          <p>Your third line has {errorParameters.line3} syllables.</p>
+                          <br></br>
+                          <p>Your poem must contain the word bread, and follow the form of a haiku.
+                          The first and last lines of a Haiku have 5 syllables and the middle line has 7 syllables.</p>
+
+
+                        </div>
+
+                      );
       }
       if(this.props.haikuSub==false)
       {
@@ -129,7 +150,7 @@ class InputField extends Component {
       <button onClick = {this.submitChange}>
         submit
       </button>
-      <p className = "error">{errorMessage}</p>
+      <div>{errorMessage}</div>
       </div>)
     }
     else{
@@ -156,7 +177,7 @@ class InputField extends Component {
       line2: this.state.input2,
       line3: this.state.input3,
       author: this.state.input4,
-    }))
+    }).success )
     {
       this.props.submit({
         line1: this.state.input1,
@@ -164,9 +185,14 @@ class InputField extends Component {
         line3: this.state.input3,
         author: this.state.input4,
       })
+      this.setState({input1:"",
+                     input2:"",
+                     input3:"",
+                     input4:""})
       }
       else{
-        this.setState({validHaiku:false});
+
+        this.props.setErr();
       }
     }
   }
@@ -207,11 +233,13 @@ class InputField extends Component {
   }
 
 class App extends Component {
+  /*
   componentDidMount() {
     fetch("localhost:5000/haikus").then(results => {
       this.setState({poemList:results});
     })
   }
+  */
 
   constructor()
   {
@@ -219,6 +247,7 @@ class App extends Component {
     this.switchMode = this.switchMode.bind(this);
     this.state = {
       writing:true,
+      error:false,
       haikuSubmitted:false,
       poemList:[
         /*
@@ -245,6 +274,7 @@ class App extends Component {
     };
 
     this.submitHaiku = this.submitHaiku.bind(this);
+    this.setError = this.setError.bind(this);
   }
   render() {
     return (
@@ -254,7 +284,10 @@ class App extends Component {
         />
         <InputField writing={this.state.writing}
                     submit = {this.submitHaiku}
-                    haikuSub = {this.state.haikuSubmitted}/>
+                    haikuSub = {this.state.haikuSubmitted}
+                    setErr = {this.setError}
+                    resetErr = {this.resetError}
+                    validHaiku = {!(this.state.error)}/>
         <Feed writing={this.state.writing}
               poemList = {this.state.poemList}/>
       </div>
@@ -267,7 +300,14 @@ class App extends Component {
     this.setState({haikuSubmitted:true});
   }
 
+  setError(){
+    this.setState({error:true});
+  }
+
+
+
   switchMode() {
+    this.setState({error:false});
     if(this.state.writing == false)
     {
       this.setState({writing:true});

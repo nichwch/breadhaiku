@@ -20,7 +20,10 @@
 }
 
 .error{
+  width: 20%;
   color: red;
+  margin-left: 40%;
+  margin-right:40%;
 }
 
 p, button {
@@ -39,6 +42,10 @@ button:hover{
   color: #737373;
 }
 
+button:focus{
+    outline: none;
+}
+
 ul {
   list-style-type: none;
   padding: 0px;
@@ -55,4 +62,9 @@ input {
   border-left: none;
   border-right: none;
   margin-top:10px;
+}
+
+input:focus{
+    outline: none;
+    bordor-color:black;
 }
