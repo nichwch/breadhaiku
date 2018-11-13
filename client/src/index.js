@@ -52,7 +52,7 @@ function Buttons(props){
   {
     return(
       <span>
-      <p className = "inline_">
+      <p className = "inline">
         browse
       </p>
       <button onClick = {props.switch}>
@@ -68,7 +68,7 @@ function Buttons(props){
       <button onClick = {props.switch}>
         browse
       </button>
-      <p className = "inline_">
+      <p className = "inline">
         //write
       </p>
       </span>
