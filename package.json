@@ -1,26 +1,21 @@
 {
-  "name": "breadhaiku",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1",
-    "react-scripts": "2.1.1",
-    "syllable": "^3.2.0"
-  },
+  "name": "intergrate",
+  "version": "1.0.0",
+  "description": "Starting intergrating",
+  "main": "server.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "node server.js",
+    "server": "nodemon server.js"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "author": "Torin Keenan",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^4.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mysql": "^2.16.0"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "devDependencies": {
+    "nodemon": "^1.18.6"
+  }
 }
