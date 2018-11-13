@@ -220,13 +220,11 @@ class InputField extends Component {
       </div>
     )
   }
-
-
   function Feed(props) {
     if(props.writing == false)
     {
       let poems = props.poemList.map(currentpoem => {
-        return <Poem poem = {currentpoem} />
+        return <Poem poem = {currentpoem}  key={currentpoem.id}/>
       })
       return (<ul>
         {poems}
@@ -234,29 +232,21 @@ class InputField extends Component {
     }
     return null;
   }
-
   function Poem(props) {
     return (
       <div className = "poemBlock">
-      <li key={props.poem.line1}>
-        <p>{props.poem.line1}</p>
-        <p>{props.poem.line2}</p>
-        <p>{props.poem.line3}</p>
+      <li>
+        <p>{props.poem.line_1}</p>
+        <p>{props.poem.line_2}</p>
+        <p>{props.poem.line_3}</p>
         <p className = "authorSign">Written by {props.poem.author}</p>
       </li>
       </div>
-
     )
   }
-
 class App extends Component {
-  /*
-  componentDidMount() {
-    fetch("localhost:5000/haikus").then(results => {
-      this.setState({poemList:results});
-    })
-  }
-  */
+
+
 
   constructor()
   {
@@ -289,10 +279,20 @@ class App extends Component {
         */
       ]
     };
-
     this.submitHaiku = this.submitHaiku.bind(this);
     this.setError = this.setError.bind(this);
     this.resetError = this.resetError.bind(this);
+  }
+
+  componentDidMount() {
+
+  fetch('http://localhost:5000/haikus')
+  .then(response => response.json())
+  .then(json => {
+    this.setState({poemList:json})
+    console.log(json) // access json.body here
+  })
+
   }
   render() {
     return (
@@ -317,17 +317,12 @@ class App extends Component {
     this.setState({poemList: newPoemList})
     this.setState({haikuSubmitted:true});
   }
-
   setError(){
     this.setState({error:true});
   }
-
   resetError(){
     this.setState({error:false});
   }
-
-
-
   switchMode() {
     this.setState({error:false});
     if(this.state.writing == false)
@@ -339,8 +334,5 @@ class App extends Component {
       this.setState({writing:false});
     }
   }
-
 }
-
-
 ReactDOM.render(<App />, document.getElementById('root'));
