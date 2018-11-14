@@ -57,13 +57,19 @@ app.get('/haikus',function (req,res) {
 });
 
 app.post('/addhaiku',function(req,res){
-		console.log('body');
-		console.log(req.body);
+
+    params = [[req.body.author, req.body.line_1 , req.body.line_2 , req.body.line_3]]
+    console.log(params);
   //  var haiku = JSON.parse(req.body)
-				con.query(`Insert INTO haikus (author,line_1,line_2,line_3) VALUES ?`,
-					[req.body.author,req.body.line_1,req.body.line_2,req.body.line_3], function (err, result) {
-				    	if (err) res.status(500).json({ error: err.message });
+				con.query(`Insert INTO haikus (author,line_1,line_2,line_3) VALUES ?`, [params]
+					, function (err, result) {
+				    	if (err){
+                res.status(500).json({ error: err.message })
+                console.log(err)
+              }
+              else{
               res.sendStatus(200);
+            }
 					});
 
 
