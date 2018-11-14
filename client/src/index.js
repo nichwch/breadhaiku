@@ -314,7 +314,7 @@ class App extends Component {
 
   //this should do a post/update request
   submitHaiku(newHaiku) {
-    newHaiku = [newHaiku];
+//    newHaiku = [newHaiku];
     console.log('new haiku')
     console.log(JSON.stringify(newHaiku))
     fetch('http://localhost:5000/addhaiku',{
