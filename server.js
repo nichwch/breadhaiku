@@ -4,6 +4,9 @@ const mysql = require('mysql');
 const cors = require('cors')
 const app = express();
 const port = 5000;
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -56,9 +59,9 @@ app.get('/haikus',function (req,res) {
 app.post('/addhaiku',function(req,res){
 		console.log('body');
 		console.log(req.body);
-    var haiku = JSON.parse(req.body)
+  //  var haiku = JSON.parse(req.body)
 				con.query(`Insert INTO haikus (author,line_1,line_2,line_3) VALUES ?`,
-					[haiku.author,haiku.line_1,haiku.line_2,haiku_1.line_3], function (err, result) {
+					[req.body.author,req.body.line_1,req.body.line_2,req.body.line_3], function (err, result) {
 				    	if (err) res.status(500).json({ error: err.message });
               res.sendStatus(200);
 					});

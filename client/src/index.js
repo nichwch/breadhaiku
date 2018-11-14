@@ -314,10 +314,16 @@ class App extends Component {
 
   //this should do a post/update request
   submitHaiku(newHaiku) {
-    newHaiku = [newHaiku];
+//    newHaiku = [newHaiku];
+    console.log('new haiku')
+    console.log(JSON.stringify(newHaiku))
     fetch('http://localhost:5000/addhaiku',{
       method: 'POST',
-      body : JSON.stringify(newHaiku)
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify(newHaiku),
     })
     .then(res =>{
 
