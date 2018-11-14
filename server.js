@@ -4,6 +4,8 @@ const mysql = require('mysql');
 const cors = require('cors')
 const app = express();
 const port = 5000;
+const config = require('./dbconfig.js');
+db = config.database;
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -11,11 +13,11 @@ app.use(bodyParser.json());
 app.use(cors());
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password",
+  host: db.host,
+  user: db.user,
+  password: db.password,
   insecureAuth : true,
-  database: 'haikus'
+  database: db.database
 });
 
 con.connect(function(err) {
@@ -48,7 +50,7 @@ app.use('/test', express.static(__dirname + '/test'));
 
 app.get('/haikus',function (req,res) {
 
-		 con.query(`SELECT id,author,line_1,line_2,line_3 FROM HAIKUS ORDER BY id DESC`, function (err, result) {
+		 con.query(`SELECT id,author,line_1,line_2,line_3 FROM haikus ORDER BY id DESC`, function (err, result) {
 			    if (err) throw err;
 			    res.json(result);
 		    });
