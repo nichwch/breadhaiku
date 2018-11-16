@@ -282,18 +282,23 @@ class App extends Component {
     this.submitHaiku = this.submitHaiku.bind(this);
     this.setError = this.setError.bind(this);
     this.resetError = this.resetError.bind(this);
+    this.updateHaikus = this.updateHaikus.bind(this);
+  }
+  updateHaikus()
+  {
+    fetch('http://localhost:5000/haikus')
+    .then(response => response.json())
+    .then(json => {
+      this.setState({poemList:json})
+      console.log(json) // access json.body here
+    })
   }
 
   componentDidMount() {
-
-  fetch('http://localhost:5000/haikus')
-  .then(response => response.json())
-  .then(json => {
-    this.setState({poemList:json})
-    console.log(json) // access json.body here
-  })
-
+    this.updateHaikus();
   }
+
+
   render() {
     return (
       <div className="App">
@@ -327,8 +332,8 @@ class App extends Component {
     })
     .then(res =>{
 
-    let newPoemList = newHaiku.concat(this.state.poemList);
-    this.setState({poemList: newPoemList})
+    //let newPoemList = newHaiku.concat(this.state.poemList);
+    //this.setState({poemList: newPoemList})
     this.setState({haikuSubmitted:true});
     }
   );
@@ -349,6 +354,7 @@ class App extends Component {
     else {
       this.setState({writing:false});
     }
+    this.updateHaikus();
   }
 }
 ReactDOM.render(<App />, document.getElementById('root'));
