@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "4d732775957e943a7be6",
+    "revision": "8e8f290e06404ad54332",
     "url": "/static/css/main.3be246dd.chunk.css"
   },
   {
-    "revision": "4d732775957e943a7be6",
-    "url": "/static/js/main.4d732775.chunk.js"
+    "revision": "8e8f290e06404ad54332",
+    "url": "/static/js/main.8e8f290e.chunk.js"
   },
   {
     "revision": "f01472801d5758fc3ab8",
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/static/media/breadwarrior.34ba0109.png"
   },
   {
-    "revision": "f6cdafbde89305bdc6367a2d7338affb",
+    "revision": "a7c266fc8544811578294e6e19426cd0",
     "url": "/index.html"
   }
 ];
