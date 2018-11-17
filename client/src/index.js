@@ -12,9 +12,9 @@ function verifyHaiku(haiku)
   let syllable2 = (syllable(haiku.line_2)==7);
   let syllable3 = (syllable(haiku.line_3)==5);
 
-  let bread1 = haiku.line_1.includes("bread");
-  let bread2 = haiku.line_2.includes("bread");
-  let bread3 = haiku.line_3.includes("bread");
+  let bread1 = haiku.line_1.toUpperCase().includes("BREAD");
+  let bread2 = haiku.line_2.toUpperCase().includes("BREAD");
+  let bread3 = haiku.line_3.toUpperCase().includes("BREAD");
 
   let max1 = haiku.line_1.length < 300;
   let max2 = haiku.line_2.length < 300;
@@ -286,7 +286,7 @@ class App extends Component {
   }
   updateHaikus()
   {
-    fetch('http://localhost:5000/haikus')
+    fetch('http://18.188.62.242:5000/haikus')
     .then(response => response.json())
     .then(json => {
       this.setState({poemList:json})
@@ -322,7 +322,7 @@ class App extends Component {
 //    newHaiku = [newHaiku];
     console.log('new haiku')
     console.log(JSON.stringify(newHaiku))
-    fetch('http://localhost:5000/addhaiku',{
+    fetch('http://18.188.62.242:5000/addhaiku',{
       method: 'POST',
       headers: {
         Accept: 'application/json',

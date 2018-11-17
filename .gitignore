@@ -13,6 +13,7 @@ client/node_modules/
 # production
 /build
 dbconfig.js
+bread-node.pem
 
 # misc
 .DS_Store
